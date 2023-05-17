@@ -1,0 +1,12 @@
+{
+  "name": "andmebaas",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.3.0",
+    "set-interval-async": "^3.0.3"
+
+  }
+}
+
+

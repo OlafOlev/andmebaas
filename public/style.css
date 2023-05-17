@@ -1,0 +1,83 @@
+/* Style the form container */
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 800px;
+    font-family: Arial, sans-serif;
+}
+
+/* Style the form heading a*/
+h1 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Style the form fields */
+form div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Style the form labels */
+form label {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Style the form inputs */
+form input, form select {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f2f2f2;
+    font-size: 16px;
+    width: 100%;
+}
+
+/* Style the form submit button */
+form button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Style the form submit button on hover */
+form button:hover {
+    background-color: #3e8e41;
+}
+
+/* Style the form results section */
+#results {
+    margin-top: 50px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Style the form results headings */
+#results h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style the form results totals */
+#results p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Style the form results display values */
+#results span {
+    font-weight: bold;
+}

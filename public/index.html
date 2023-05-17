@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hääletussüsteem</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100">
+<div>
+    <h1>Hääletussüsteem</h1>
+    <div>
+        <div>
+            <h2>Hääl</h2>
+            <form id="vote-form">
+                <div>
+                    <label for="firstName">Eesnimi</label>
+                    <input id="firstName" type="text" placeholder="Monkey" required>
+                </div>
+                <div>
+                    <label for="lastName">Perenimi</label>
+                    <input id="lastName" type="text" placeholder="Luffy" required>
+                </div>
+                <div>
+                    <label for="decision">Otsus</label>
+                    <select id="decision" required>
+                        <option value="">-- Select --</option>
+                        <option value="poolt">Poolt</option>
+                        <option value="vastu">Vastu</option>
+                    </select>
+                </div>
+                <button type="submit">Esita</button>
+            </form>
+        </div>
+
+        <div>
+            <h2>Results</h2>
+            <p>Hääli kokku: <span id="total-votes"></span></p>
+            <p>Poolt: <span id="for-votes"></span></p>
+            <p>Vastu: <span id="against-votes"></span></p>
+            <p>Aega jäänud: <span id="time-display"></span></p>
+        </div>
+    </div>
+</div>
+<script>
+    const voteForm = document.getElementById('vote-form');
+    const totalVotes = document.getElementById('total-votes');
+    const forVotes = document.getElementById('for-votes');
+    const againstVotes = document.getElementById('against-votes');
+    const timeDisplay = document.getElementById('time-display');
+    voteForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const decision = document.getElementById('decision').value;
+        fetch('/vote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ firstName, lastName, decision })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Vote submitted successfully');
+                    voteForm.reset();
+                    updateResults();
+                } else {
+                    response.text().then(errorMessage => {
+                        console.error(errorMessage);
+                        alert('Vote submission failed: ' + errorMessage);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Vote submission failed: ' + error.message);
+            });
+    });
+    //a
+    function updateResults() {
+        fetch('/results')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                totalVotes.textContent = data.total;
+                forVotes.textContent = data.forCount;
+                againstVotes.textContent = data.againstCount;
+                const remainingTime = Math.max(0, data.timeLeft);
+                const minutes = Math.floor(remainingTime / 60000);
+                const seconds = Math.floor((remainingTime % 60000) / 1000);
+                const timeString = `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
+                timeDisplay.textContent = timeString;
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Failed to update voting results: ' + error.message);
+            });
+    }
+    setInterval(updateResults, 1000);
+</script>
+</body>
+</html>
